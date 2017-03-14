@@ -1,0 +1,512 @@
+#: import random random
+<Tile>: #Set properties for each individual button
+    background_normal: '' #Sets Buttons Background White
+    background_color: [random.random() for i in xrange(3)]+[1] #Sets Button colour to a random colour
+    on_release: self.background_color = [random.random() for i in xrange(3)]+[1] #on press changes bgd to random colour
+
+<LiveTiles>: #Sets properties for Middle Section Buttons(Called Live Tiles in Metro UI design style))
+    cols: 3 #Number of columns
+    rows: 2 #Number of Rows
+    spacing: [5, 5] #Space between other buttons
+    padding: [20,10] #Space between Buttons and status bar+Bottom Bar
+
+<MainScreenManager>: #Manages the Middle sections buttons and changes between them when the user interacts
+    screenplay:screenplay
+    HomeScreen: #The main screen shown to the user
+        id: homescreen
+        name: 'home_screen'
+        on_pre_enter: root.parent.backbutton.disabled = True
+        LiveTiles:
+            Tile:
+
+                on_release:
+                    root.transition.direction = 'left'
+                    root.current = 'music_screen'
+                Image:
+                    source: './Images/music.png'
+                    color: 1, 1, 1, 1
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y+15
+                    size: 200, 170
+                    allow_stretch: True
+                Label:
+                    text: "Music"
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y-95
+                    font_size: 25
+            Tile:
+                on_press:
+                    root.transition.direction = 'left'
+                    root.current = 'control_screen'
+                Image:
+                    source: './Images/controls.png'
+                    color: 1, 1, 1, 1
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y+15
+                    size: 200, 200
+                    allow_stretch: True
+                Label:
+                    text: "Controls"
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y-95
+                    font_size: 25
+            Tile:
+                on_press:
+                    root.transition.direction = 'left'
+                    root.current = 'aux_screen'
+                Image:
+                    source: './Images/aux2.png'
+                    color: 1, 1, 1, 1
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y+15
+                    size: 200, 170
+                    allow_stretch: True
+                Label:
+                    text: "Auxiliary Options"
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y-95
+                    font_size: 25
+            Tile:
+                on_press:
+                    root.transition.direction = 'left'
+                    root.current = 'reverse_screen'
+                Image:
+                    source: './Images/reverse.png'
+                    color: 1, 1, 1, 1
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y+15
+                    size: 200, 170
+                    allow_stretch: True
+                Label:
+                    text: "Reverse camera"
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y-95
+                    font_size: 25
+            Tile:
+                on_press:
+                    root.transition.direction = 'left'
+                    root.current = 'gauge_screen'
+                Image:
+                    source: './Images/gauge.png'
+                    color: 1, 1, 1, 1
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y+15
+                    size: 200, 170
+                    allow_stretch: True
+                Label:
+                    text: "Gauges"
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y-95
+                    font_size: 25
+            Tile:
+                on_release:
+                    root.transition.direction = 'left'
+                    root.current = 'setting_screen'
+                Image:
+                    source: './Images/settings.png'
+                    color: 1, 1, 1, 1
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y+15
+                    size: 200, 200
+                    allow_stretch: True
+                Label:
+                    text: "Settings"
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y-95
+                    font_size: 25
+
+    MusicScreen: #Displays Play pause and volume on main screen (Linked to bottom bar)
+        name: 'music_screen'
+        screenplay:screenplay
+        on_pre_enter: root.parent.backbutton.disabled = False
+        LiveTiles:
+            Tile:
+                Image:
+                    source: './Images/mute.png'
+                    color: 1, 1, 1, 1
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
+                    size: 200, 200
+                    allow_stretch: True
+            Tile:
+                Image:
+                    source: './Images/volume_down.png'
+                    color: 1, 1, 1, 1
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
+                    size: 200, 200
+                    allow_stretch: True
+            Tile:
+                Image:
+                    source: './Images/volume_up.png'
+                    color: 1, 1, 1, 1
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
+                    size: 200, 200
+                    allow_stretch: True
+            Tile:
+                Image:
+                    id: skip_back
+                    source: './Images/back.png'
+                    color: 1, 1, 1, 1
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
+                    size: 200, 200
+                    allow_stretch: True
+            Tile:
+                on_press:
+                    if root.parent.playbutton.play_pause.source == './Images/play.png': root.parent.playbutton.play_pause.source = './Images/pause.png'
+                    else: root.parent.playbutton.play_pause.source = './Images/play.png'
+                    if screenplay.source == './Images/play.png': screenplay.source = './Images/pause.png'
+                    else: screenplay.source = './Images/play.png'
+                Image:
+                    id: screenplay
+                    source: './Images/play.png'
+                    color: 1, 1, 1, 1
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
+                    size: 200, 200
+                    allow_stretch: True
+            Tile:
+                Image:
+                    id: skip
+                    source: './Images/skip.png'
+                    color: 1, 1, 1, 1
+                    center_x: self.parent.center_x
+                    center_y: self.parent.center_y
+                    size: 200, 200
+                    allow_stretch: True
+    ControlScreen:
+        name: 'control_screen'
+        on_pre_enter: root.parent.backbutton.disabled = False
+        LiveTiles:
+            Tile:
+                text: "Cancel"
+            Tile:
+                text: "Up"
+            Tile:
+                text: "Set"
+            Tile:
+                text: "Left"
+            Tile:
+                text: "Down"
+            Tile:
+                text: "Right"
+    AuxScreen:
+        name: 'aux_screen'
+        on_pre_enter: root.parent.backbutton.disabled = False
+        LiveTiles:
+            Tile:
+                text: "Work Mode"
+            Tile:
+                text: "TOO HOT"
+            Tile:
+                text: "TOO COLD"
+            Tile:
+                text: "Adjust Radio"
+            Tile:
+                text: "Inside dew build Up"
+            Tile:
+                text: "Outside dew build up"
+    ReverseScreen:
+        name: 'reverse_screen'
+        on_pre_enter: root.parent.backbutton.disabled = False
+    GaugeScreen:
+        name: 'gauge_screen'
+        on_pre_enter: root.parent.backbutton.disabled = False
+        LiveTiles:
+            Tile:
+                text: "Speed"
+            Tile:
+                text: "RPM"
+            Tile:
+                text: "Load"
+            Tile:
+                text: "Boost Pressure"
+            Tile:
+                text: "Fuel Consumption"
+            Tile:
+                text: "Fuel Remaining"
+    SettingScreen:
+        name: 'setting_screen'
+        on_pre_enter: root.parent.backbutton.disabled = False
+
+        on_enter: root.parent.mymanager.lastscreen = 'home_screen'
+
+        LiveTiles:
+            Tile:
+                text: "Configure Gauges"
+            Tile:
+                text: "Configure Aux Screen"
+            Tile:
+                text: "Configure Settings"
+            Tile:
+                text: "Bluetooth"
+                on_press:
+                    root.lastscreen = 'setting_screen'
+                    root.transition.direction = 'left'
+                    root.current = 'bluetooth_screen'
+            Tile:
+                text: "Configure Home"
+            Tile:
+                text: "Open Kivy Settings"
+                on_release: app.open_settings()
+    BluetoothScreen:
+        name: 'bluetooth_screen'
+        on_pre_enter: root.parent.backbutton.disabled = False
+        LiveTiles:
+            Tile:
+                text: "Add"
+            Tile:
+                text: "Show devices"
+            Tile:
+                text: "Confire OBD2"
+            Tile:
+                text: "Remove Device"
+            Tile:
+                text: "Discoverable"
+            Tile:
+                text: "Reboot Bluetooth"
+
+
+
+
+
+<HomeInterface>:
+
+    backbutton: backbutton
+    mymanager: mymanager
+    playbutton: playbutton
+    name: 'home_interface'
+    orientation: 'vertical'
+    StatusBar:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height:30
+        canvas:
+            Color:
+                rgba: 0.5, 0.5, 0.5, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Button:
+            canvas:
+                Color:
+                    rgba: 0.3, 0.3, 0.3, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            background_color: 0, 0, 0 , 0
+            size_hint_x:2
+            id:backbutton
+            disabled: True
+            on_disabled:
+                if self.disabled == True: backarrow.color = 1,1,1,0
+                else: backarrow.color = 1,1,1,1
+
+            on_press:
+                mymanager.transition.direction = 'right'
+                mymanager.current= mymanager.lastscreen
+                mymanager.lastscreen = str(mymanager.current_screen)[14:str(mymanager.current_screen).index("'>", 13 )]
+            Image:
+                id:backarrow
+                source: './Images/backarrow.png'
+                color: 1, 1, 1, 0
+                center_x: self.parent.center_x
+                center_y: self.parent.center_y
+                size: 40, 20
+                allow_stretch: True
+
+        Button:
+            background_color: 0, 0, 0 , 0
+            size_hint_x:5
+            on_press:
+                mymanager.transition.direction = 'down'
+                mymanager.current= 'bluetooth_screen'
+                mymanager.lastscreen = 'home_screen'
+            Image:
+                source: './Images/bluetooth.png'
+                color: 1, 1, 1, 1
+                center_x: self.parent.center_x-80
+                center_y: self.parent.center_y
+                size: 20, 20
+                allow_stretch: True
+            Label:
+                center_x: self.parent.center_x
+                center_y: self.parent.center_y
+                font_size: 10
+                text: "Bluetooth Phone Connected\n<phone name>"
+        Button:
+            background_color: 0, 0, 0 , 0
+            size_hint_x:1
+            on_press:
+                if engine.color == [0,1,0,1]: engine.color = 1, 0, 0, 1
+                else: engine.color = 0,1,0,1
+            Image:
+                id: engine
+                source: './Images/engine.png'
+                color: 0, 1, 0, 1
+                center_x: self.parent.center_x
+                center_y: self.parent.center_y
+                size: 30, 30
+                allow_stretch: True
+        Button:
+            background_color: 0, 0, 0 , 0
+            size_hint_x:1
+            on_press:
+                if obd.color == [0,1,0,1]: obd.color = 1, 0, 0, 1
+                else: obd.color = 0,1,0,1
+            Image:
+                id: obd
+                source: './Images/obd-ii.png'
+                color: 0, 1, 0, 1
+                center_x: self.parent.center_x
+                center_y: self.parent.center_y
+                size: 30, 30
+                allow_stretch: True
+
+        Button:
+            background_color: 0, 0, 0 , 0
+            size_hint_x: 1
+            Image:
+                source: './Images/power.png'
+                color: 1, 0, 0, 1
+                center_x: self.parent.center_x
+                center_y: self.parent.center_y
+                size: 20, 20
+                allow_stretch: True
+        Button:
+            background_color: 0, 0, 0 , 0
+            size_hint_x: 1
+            Image:
+                source: './Images/reboot.png'
+                color: 1, 0.5, 0.5, 1
+                center_x: self.parent.center_x
+                center_y: self.parent.center_y
+                size: 20, 20
+                allow_stretch: True
+        Label:
+            size_hint_x: 2
+            font_size: 10
+            text: app.time
+
+
+    MainScreenManager:
+        id: mymanager
+
+    BottomBar:
+        id: bottombar
+        playbutton:playbutton
+        size_hint_y: None
+        orientation: 'vertical'
+        ProgressBar:
+            max: 200 #Song length
+            value: 150 #Current time on song
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            spacing: 10
+            padding: [20, 0]
+            canvas:
+                Color:
+                    rgba: 0.3, 0.3, 0.3, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            BoxLayout:
+                Label:
+                    text: "Cover\nPhoto"
+                Label:
+                    font_size: 20
+                    text: "Song Name:\nArtist:\nAlbum:"
+                Label:
+                    text: ""
+            BoxLayout:
+                Button:
+                    background_color: 0, 0, 0 , 0
+                    on_press: skip_back.size = 85, 85
+                    on_release: skip_back.size = 80, 80
+                    Image:
+                        id: skip_back
+                        source: './Images/back.png'
+                        color: 1, 1, 1, 1
+                        center_x: self.parent.center_x
+                        center_y: self.parent.center_y+12
+                        size: 80, 80
+                        allow_stretch: True
+                Button:
+                    id: playbutton
+                    play_pause:play_pause
+                    background_color: 0, 0, 0 , 0
+                    on_press:
+                        play_pause.size = 85, 85
+
+                    on_release:
+                        play_pause.size = 80, 80
+                        if play_pause.source == './Images/play.png': play_pause.source = './Images/pause.png'
+                        else: play_pause.source = './Images/play.png'
+                        if play_pause.source == './Images/play.png': root.mymanager.screenplay.source = './Images/play.png'
+                        else: root.mymanager.screenplay.source = './Images/pause.png'
+                    Image:
+                        id: play_pause
+                        source: './Images/play.png'
+                        color: 1, 1, 1, 1
+                        center_x: self.parent.center_x
+                        center_y: self.parent.center_y+12
+                        size: 80, 80
+                        allow_stretch: False
+                Button:
+                    background_color: 0, 0, 0 , 0
+                    on_press: skip.size = 85, 85
+                    on_release: skip.size = 80, 80
+                    Image:
+                        id: skip
+                        source: './Images/skip.png'
+                        color: 1, 1, 1, 1
+                        center_x: self.parent.center_x
+                        center_y: self.parent.center_y+12
+                        size: 80, 80
+                        allow_stretch: True
+            BoxLayout:
+                Button:
+                    background_color: 0, 0, 0 , 0
+                    on_press:
+                        mute.size = 75, 75
+                        if mute.color == [1, 1, 1, 1]: mute.color = 0 , 0, 0, 1
+                        else: mute.color = 1, 1, 1, 1
+                    on_release: mute.size = 80, 80
+                    Image:
+                        id: mute
+                        source: './Images/mute.png'
+                        color: 1, 1, 1, 1
+                        center_x: self.parent.center_x
+                        center_y: self.parent.center_y+12
+                        size: 80, 80
+                        allow_stretch: True
+
+                Button:
+                    background_color: 0, 0, 0 , 0
+                    on_press: vol_down.size = 75, 75
+                    on_release: vol_down.size = 80, 80
+                    Image:
+                        id: vol_down
+                        source: './Images/volume_down.png'
+                        color: 1, 1, 1, 1
+                        center_x: self.parent.center_x
+                        center_y: self.parent.center_y+12
+                        size: 80, 80
+                        allow_stretch: True
+
+                Button:
+                    background_color: 0, 0, 0 , 0
+                    on_press: vol_up.size = 85, 85
+                    on_release: vol_up.size = 80, 80
+                    Image:
+                        id: vol_up
+                        source: './Images/volume_up.png'
+                        color: 1, 1, 1, 1
+                        center_x: self.parent.center_x
+                        center_y: self.parent.center_y+12
+                        size: 80, 80
+                        allow_stretch: True
